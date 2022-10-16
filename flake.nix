@@ -14,12 +14,11 @@
           inherit system;
         };
         python = pkgs.python39.withPackages (p: with p; [ pip ]);
-        nativeBuildInputs = with pkgs; [
-          virtualenv
-          jdk11_headless
-        ] ++ [python];
         shell = pkgs.mkShell {
-          inherit nativeBuildInputs;
+          nativeBuildInputs = [
+            pkgs.jdk11_headless
+            python
+          ];
         };
         run = pkgs.writeShellScript "run-redbot.sh" ''
           declare -x PATH="${pkgs.jdk11_headless}/bin:$PATH"
@@ -32,12 +31,10 @@
       in
       {
         packages.default = run;
-        packages.shell = shell;
         devShells.default = shell;
         apps.default = {
           type = "app";
           program = "${run.outPath}";
-          inherit nativeBuildInputs;
         };
       }));
 }
