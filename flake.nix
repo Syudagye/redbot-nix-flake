@@ -13,7 +13,7 @@
         pkgs = import nixpkgs {
           inherit system;
         };
-        python = pkgs.python39.withPackages (p: with p; [ pip ]);
+        python = pkgs.python39.withPackages (p: [ p.pip ]);
         shell = pkgs.mkShell {
           nativeBuildInputs = [
             pkgs.jdk11_headless
